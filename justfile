@@ -12,23 +12,17 @@ _runtimes:
 act *args:
     @{{root}}/.scripts/act.sh {{args}}
 
-test:
-    @cargo test --workspace --all-targets --all-features -- --nocapture
+test *args:
+    @cargo test --workspace --all-targets --all-features {{args}}
 
-test-release:
-    @cargo test --release --workspace --all-targets --all-features -- --nocapture
+check *args:
+    @cargo check {{args}}
 
-check:
-    @cargo check
+fmt *args:
+    @cargo fmt --all {{args}}
 
-check-release:
-    @cargo check --release
+clippy *args:
+    @cargo clippy --workspace --all-targets --all-features {{args}}
 
-fmt:
-    @cargo fmt --all
-
-fmt-check:
-    @cargo fmt --all -- --check
-
-clippy:
-    @cargo clippy --workspace --all-targets --all-features
+doc *args:
+    @cargo doc --no-deps --document-private-items --all-features --workspace

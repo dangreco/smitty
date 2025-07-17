@@ -1,0 +1,70 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: "1.88.0"
+          override: true
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Run tests
+        run: just test
+
+  rustfmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: "1.88.0"
+          override: true
+          components: rustfmt
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Check formatting
+        run: just fmt --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: "1.88.0"
+          override: true
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Clippy check
+        run: just clippy -- -D warnings
+
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: "1.88.0"
+          override: true
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Check documentation
+        env:
+          RUSTDOCFLAGS: -D warnings
+        run: just doc
