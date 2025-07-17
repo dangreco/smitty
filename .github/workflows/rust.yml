@@ -4,12 +4,10 @@ on:
     paths:
       - src/**/*
       - Cargo.toml
-      - Cargo.lock
   push:
     paths:
       - src/**/*
       - Cargo.toml
-      - Cargo.lock
 jobs:
   test:
     runs-on: ubuntu-latest

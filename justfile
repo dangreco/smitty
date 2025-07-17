@@ -4,14 +4,13 @@ _default:
     @just --list
 
 _root:
-    @echo
+    @echo {{root}}
 
 _runtimes:
-    @/.scripts/runtimes.sh
+    @{{root}}/.scripts/runtimes.sh
 
 act *args:
-    @/.scripts/act.sh
-
+    @{{root}}/.scripts/act.sh {{args}}
 
 test:
     @cargo test --workspace --all-targets --all-features -- --nocapture
