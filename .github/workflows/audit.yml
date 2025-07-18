@@ -1,4 +1,4 @@
-name: Security audit
+name: Audit
 on:
   workflow_dispatch:
   schedule:
@@ -6,23 +6,47 @@ on:
   push:
     paths:
       - "**/Cargo.toml"
+      - "**/Cargo.lock"
   pull_request:
+permissions:
+  id-token: write
+  contents: read
 jobs:
-  audit:
+  audit--audit:
+    name: Audit
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup sccache
+        if: ${{ !env.ACT }}
+        uses: mozilla-actions/sccache-action@v0.0.9
+
+      - name: Setup sccache env
+        if: ${{ !env.ACT }}
+        run: |
+          echo "SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
+          echo "RUSTC_WRAPPER=sccache" >> $GITHUB_ENV
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
-          toolchain: "1.88.0"
+          toolchain: 1.88.0
           override: true
+          profile: default
           components: rustfmt, clippy
-      - uses: Swatinem/rust-cache@v2
 
       - name: Generate Cargo.lock
-        run: cargo generate-lockfile
+        uses: actions-rs/cargo@v1
+        with:
+          command: generate-lockfile
 
       - name: Run security audit
+        if: ${{ !env.ACT }}
         uses: rustsec/audit-check@v2.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

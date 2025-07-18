@@ -1,8 +1,4 @@
-# couchpotato
-
-[![Crates.io](https://img.shields.io/crates/v/couchpotato.svg)](https://crates.io/crates/couchpotato)
-[![Docs.rs](https://docs.rs/couchpotato/badge.svg)](https://docs.rs/couchpotato)
-[![CI](https://github.com/dangreco/couchpotato/actions/workflows/ci.yml/badge.svg)](https://github.com/dangreco/couchpotato/actions/workflows/ci.yml)
+# smitty
 
 ## License
 

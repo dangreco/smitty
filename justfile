@@ -12,6 +12,12 @@ _runtimes:
 act *args:
     @{{root}}/.scripts/act.sh {{args}}
 
+build *args:
+    @cargo build --workspace --all-targets --all-features {{args}}
+
+run *args:
+    @cargo run {{args}}
+
 test *args:
     @cargo test --workspace --all-targets --all-features {{args}}
 
